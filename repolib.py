@@ -191,7 +191,6 @@ class User(object):
         self.username = username
         self.name = name
         self.email = email
-        self.can_create = False
         self.ssh_key = None
         self.login_script = None
 
@@ -202,7 +201,6 @@ class User(object):
     def from_config(cls, config, login_script):
         self = cls(config['username'], config['name'], config['email'])
 
-        self.can_create = ConfigLoader.as_bool(config['can_create'])
         self.ssh_key = config.get('ssh_key', None)
         self.login_script = login_script
 
