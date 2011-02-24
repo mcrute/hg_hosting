@@ -43,25 +43,31 @@ class Adornments(object):
         self.repo = repo
 
     def __str__(self):
+        adornments = []
+
         if self.repo.moved_to:
             tag = '<a style="{link_css}" href="{url}">MOVED</a>'
             tag = tag.format(link_css=self.LINK_CSS_DARK,
                                 url=self.repo.moved_to)
-            return self.BASE_HTML.format(css=self.CSS_BLUE, tag=tag)
+            adornments.append(self.BASE_HTML.format(css=self.CSS_BLUE,
+                                                        tag=tag))
 
         if self.repo.defunct:
-            return self.BASE_HTML.format(css=self.CSS_BROWN, tag="DEFUNCT")
+            adornments.append(self.BASE_HTML.format(css=self.CSS_BROWN,
+                                                        tag="DEFUNCT"))
 
         if self.repo.private:
-            return self.BASE_HTML.format(css=self.CSS_RED, tag="PRIVATE")
+            adornments.append(self.BASE_HTML.format(css=self.CSS_RED,
+                                                        tag="PRIVATE"))
 
         if self.repo.upstream:
             tag = '<a style="{link_css}" href="{url}">FORK</a>'
             tag = tag.format(link_css=self.LINK_CSS_LIGHT,
                                 url=self.repo.upstream)
-            return self.BASE_HTML.format(css=self.CSS_YELLOW, tag=tag)
+            adornments.append(self.BASE_HTML.format(css=self.CSS_YELLOW,
+                                                        tag=tag))
 
-        return ""
+        return " ".join(adornments)
 
 
 class Repository(object):
