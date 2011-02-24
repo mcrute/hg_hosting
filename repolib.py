@@ -203,13 +203,16 @@ class User(object):
         self = cls(config['username'], config['name'], config['email'])
 
         self.can_create = ConfigLoader.as_bool(config['can_create'])
-        self.ssh_key = config['ssh_key']
+        self.ssh_key = config.get('ssh_key', None)
         self.login_script = login_script
 
         return self
 
     @property
     def ssh_line(self):
+        if not self.ssh_key:
+            return ""
+
         return ('command="{self.login_script} {self.username}",'
                 'no-port-forwarding,no-X11-forwarding,no-agent-forwarding'
                 ' {self.ssh_key} {self.email}\n').format(self=self)
