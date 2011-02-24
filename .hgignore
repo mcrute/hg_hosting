@@ -3,3 +3,4 @@
 \.pyc$
 ^\.viminfo$
 ^\.bash_history$
+^scripts\.log$
