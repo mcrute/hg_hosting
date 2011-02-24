@@ -43,33 +43,33 @@ class Adornments(object):
         self.repo = repo
 
     def __str__(self):
-        adornments = []
+        adornments = [self.repo.description]
 
         if self.repo.moved_to:
             tag = '<a style="{link_css}" href="{url}">MOVED</a>'
             tag = tag.format(link_css=self.LINK_CSS_DARK,
                                 url=self.repo.moved_to)
-            adornments.append(self.BASE_HTML.format(css=self.CSS_BLUE,
-                                                        tag=tag))
+            adornments.insert(0,
+                self.BASE_HTML.format(css=self.CSS_BLUE, tag=tag))
 
         if self.repo.defunct:
-            adornments.append(self.BASE_HTML.format(css=self.CSS_BROWN,
-                                                        tag="DEFUNCT"))
+            adornments.insert(0, '<del>')
+            adornments.append('</del>')
 
         if self.repo.private:
-            adornments.append(self.BASE_HTML.format(css=self.CSS_RED,
-                                                        tag="PRIVATE"))
+            adornments.insert(0,
+                self.BASE_HTML.format(css=self.CSS_RED, tag="PRIVATE"))
 
         if self.repo.upstream:
             tag = '<a style="{link_css}" href="{url}">FORK</a>'
             tag = tag.format(link_css=self.LINK_CSS_LIGHT,
                                 url=self.repo.upstream)
-            adornments.append(self.BASE_HTML.format(css=self.CSS_YELLOW,
-                                                        tag=tag))
+            adornments.insert(0,
+                self.BASE_HTML.format(css=self.CSS_YELLOW, tag=tag))
 
         if self.repo.maintained:
-            adornments.append(self.BASE_HTML.format(css=self.CSS_GREEN,
-                                                        tag="MAINTAINED"))
+            adornments.insert(0,
+                self.BASE_HTML.format(css=self.CSS_GREEN, tag="MAINTAINED"))
 
         return " ".join(adornments)
 
@@ -140,9 +140,8 @@ class Repository(object):
                 buf.write("contact = {0}\n".format(users[self.contact]))
 
             if self.description:
-                buf.write("description = {adornments}"
-                          " {self.description}\n".format(
-                              adornments=Adornments(self), self=self))
+                buf.write("description = {adorned_name}\n".format(
+                              adorned_name=Adornments(self)))
 
             if self.writers:
                 buf.write("allow_push = {0}\n".format(",".join(self.writers)))
