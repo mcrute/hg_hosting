@@ -67,6 +67,10 @@ class Adornments(object):
             adornments.append(self.BASE_HTML.format(css=self.CSS_YELLOW,
                                                         tag=tag))
 
+        if self.repo.maintained:
+            adornments.append(self.BASE_HTML(css=self.CSS_GREEN,
+                                                tag="MAINTAINED"))
+
         return " ".join(adornments)
 
 
@@ -79,6 +83,7 @@ class Repository(object):
         self.readers = []
         self.writers = []
         self.defunct = False
+        self.maintained = True
         self.private = False
         self.moved_to = None
         self.repo_path = None
@@ -113,8 +118,8 @@ class Repository(object):
 
         self.defunct = ConfigLoader.as_bool(config.get('defunct', 'no'))
         self.private = ConfigLoader.as_bool(config.get('private', 'no'))
+        self.maintained = ConfigLoader.as_bool(config.get('maintained', 'no'))
         self.moved_to = config.get('moved_to', None)
-        self.upstream = config.get('upstream', None)
         self.upstream = config.get('upstream', None)
 
         self.repo_path = repo_path
