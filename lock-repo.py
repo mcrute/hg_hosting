@@ -11,26 +11,34 @@ Mercurial Shared SSH Repo Lock Script
 import os
 import repolib
 
-def main(argv):
-    log = repolib.get_logger('validate-login')
 
-    if ('SSH_HG_REPO' not in os.environ or
-            'SSH_HG_USER' not in os.environ):
-        log.error("Failed to execute pre-lock checks")
-        return 1
+def check_repo(env, log):
+    repo = repolib.Repository(env['SSH_HG_REPO'])
+    repo.load_from_hgrc()
 
-    try:
-        repo = repolib.Repository(os.environ['SSH_HG_REPO'])
-        repo.load_from_hgrc()
-    except IOError:
-        log.error("Could not load repository config")
-        return 1
-
-    if not repo.can_be_written_by(os.environ['SSH_HG_USER']):
-        log.error("You can not write to this repository")
+    if not repo.can_be_written_by(env['SSH_HG_USER']):
+        log.error("You can not write to this repository.")
         return 1
 
     return 0
+
+
+def main(argv):
+    log = repolib.get_logger('validate-login')
+
+    try:
+        return check_repo(os.environ, log)
+
+    except IOError:
+        log.error("Could not load repository config.")
+        log.error("Failed to execute pre-lock checks.")
+        return 1
+
+    except KeyError:
+        log.error("Incomplete or corrupted environment.")
+        log.error("Failed to execute pre-lock checks.")
+        return 1
+
 
 if __name__ == "__main__":
     import sys
