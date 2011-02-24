@@ -68,8 +68,8 @@ class Adornments(object):
                                                         tag=tag))
 
         if self.repo.maintained:
-            adornments.append(self.BASE_HTML(css=self.CSS_GREEN,
-                                                tag="MAINTAINED"))
+            adornments.append(self.BASE_HTML.format(css=self.CSS_GREEN,
+                                                        tag="MAINTAINED"))
 
         return " ".join(adornments)
 
