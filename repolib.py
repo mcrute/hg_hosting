@@ -52,6 +52,9 @@ class Adornments(object):
         if self.repo.defunct:
             return self.BASE_HTML.format(css=self.CSS_BROWN, tag="DEFUNCT")
 
+        if self.repo.private:
+            return self.BASE_HTML.format(css=self.CSS_RED, tag="PRIVATE")
+
         if self.repo.upstream:
             tag = '<a style="{link_css}" href="{url}">FORK</a>'
             tag = tag.format(link_css=self.LINK_CSS_LIGHT,
@@ -70,6 +73,7 @@ class Repository(object):
         self.readers = []
         self.writers = []
         self.defunct = False
+        self.private = False
         self.moved_to = None
         self.repo_path = None
         self.upstream = None
@@ -102,6 +106,7 @@ class Repository(object):
         self.writers = ConfigLoader.as_list(config.get('write', ''))
 
         self.defunct = ConfigLoader.as_bool(config.get('defunct', 'no'))
+        self.private = ConfigLoader.as_bool(config.get('private', 'no'))
         self.moved_to = config.get('moved_to', None)
         self.upstream = config.get('upstream', None)
         self.upstream = config.get('upstream', None)
