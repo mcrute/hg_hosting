@@ -28,8 +28,11 @@ def parse_path():
 
 def main(argv):
     log = repolib.get_logger('validate-login')
-
+    user = argv[-1]
     path = parse_path()
+
+    log.debug("Validating login for %r on %r", user, path)
+
     if path:
         repo = repolib.Repository(path)
         repo.repo_path = os.getcwd()
@@ -47,7 +50,6 @@ def main(argv):
         log.error("Could not read repo config")
         return 1
 
-    user = argv[-1]
     if not repo.can_be_read_by(user):
         log.error("You can not read this repository")
         return 1
@@ -55,6 +57,7 @@ def main(argv):
     os.environ['SSH_HG_USER'] = user
     os.environ['SSH_HG_REPO'] = repo.full_path
 
+    log.debug("All checks passed, serving.")
     dispatch.dispatch(['-R', path, 'serve', '--stdio'])
 
 

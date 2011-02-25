@@ -13,10 +13,13 @@ import repolib
 
 
 def check_repo(env, log):
-    repo = repolib.Repository(env['SSH_HG_REPO'])
+    user, repo = env['SSH_HG_USER'], env['SSH_HG_REPO']
+    log.debug("Lockcheck perms for %s on %s", user, repo)
+
+    repo = repolib.Repository(repo)
     repo.load_from_hgrc()
 
-    if not repo.can_be_written_by(env['SSH_HG_USER']):
+    if not repo.can_be_written_by(user)
         log.error("You can not write to this repository.")
         return 1
 
