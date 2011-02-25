@@ -279,7 +279,7 @@ class ConfigLoader(object):
 def get_logger(name):
     format = "%(levelname)s: %(message)s"
     logging.basicConfig(level=logging.DEBUG, format=format,
-                        filename="scripts.log")
+                        filename="/srv/hg/scripts.log")
 
     stream = logging.StreamHandler()
     stream.setLevel(logging.WARNING)

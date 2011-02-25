@@ -31,7 +31,7 @@ def main(argv):
     user = argv[-1]
     path = parse_path()
 
-    log.debug("Validating login for %r on %r", user, path)
+    log.info("Validating login for %r on %r", user, path)
 
     if path:
         repo = repolib.Repository(path)
@@ -57,7 +57,7 @@ def main(argv):
     os.environ['SSH_HG_USER'] = user
     os.environ['SSH_HG_REPO'] = repo.full_path
 
-    log.debug("All checks passed, serving.")
+    log.info("All checks passed, serving.")
     dispatch.dispatch(['-R', path, 'serve', '--stdio'])
 
 

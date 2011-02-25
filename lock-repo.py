@@ -14,7 +14,7 @@ import repolib
 
 def check_repo(env, log):
     user, repo = env['SSH_HG_USER'], env['SSH_HG_REPO']
-    log.debug("Lockcheck perms for %s on %s", user, repo)
+    log.info("Lockcheck perms for %s on %s", user, repo)
 
     repo = repolib.Repository(repo)
     repo.load_from_hgrc()
@@ -27,7 +27,7 @@ def check_repo(env, log):
 
 
 def main(argv):
-    log = repolib.get_logger('validate-login')
+    log = repolib.get_logger('lock-repo')
 
     try:
         return check_repo(os.environ, log)
