@@ -19,7 +19,7 @@ def check_repo(env, log):
     repo = repolib.Repository(repo)
     repo.load_from_hgrc()
 
-    if not repo.can_be_written_by(user)
+    if not repo.can_be_written_by(user):
         log.error("You can not write to this repository.")
         return 1
 
