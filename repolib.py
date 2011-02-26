@@ -150,7 +150,7 @@ class Repository(object):
 
         if self.lock_script:
             buf.write("[hooks]\n")
-            buf.write("pretxnchangegroup.deny.lock = {0}\n".format(
+            buf.write("prechangegroup.verify-permission = {0}\n".format(
                         self.lock_script))
             buf.write("\n")
 
